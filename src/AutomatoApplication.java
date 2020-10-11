@@ -5,44 +5,6 @@ import java.util.Scanner;
 
 public class AutomatoApplication {
 
-/*    entrada
-2            numero de automatos de teste
-2 3 4 0 1    cabecalho automato 1: 2 estados, 3 simbolos, 4 transicoes
-0            estados de aceitacao
-0 1 0        transicoes
-0 1 1
-0 2 1
-1 2 0
-6           numero de cadeias de teste do automato 1
-1           1a cadeia de teste
-1 1         2a cadeia
-1 1 1
-1 2 2 1 1 1 2 2 1
-2 2 2 1
-2 1 2 2
-3 3 6 0 1   cabecalho automato 2: 3 estados, 3 simbolos, 6 transicoes
-1           estados de aceitacao
-0 0 1       exemplo de transicao com cadeia vazia
-1 1 0
-0 1 2
-2 2 2
-2 1 1
-2 2 1
-8           numero de cadeias de teste do automato 1
-0           cadeia de teste 1 (cadeia vazia)
-1           cadeia de teste 2
-1 2 2 2 2 2 1
-1 1 1 2 1 1 1
-1 2 1 1
-1 2 2 1 2 2
-2
-1 1 2 2 1 2
-
-
-saída
-1 1 1 1 0 0      Aceitacoes/rejeicoes das cadeias de teste do automato 1
-1 1 1 1 1 0 0 0  Aceitacoes/rejeicoes das cadeias de teste do automato 2*/
-
     public static void main(String[] args) throws IOException {
 
         /* Lê o arquivo de entrada*/

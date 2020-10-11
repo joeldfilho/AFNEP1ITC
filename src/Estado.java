@@ -36,6 +36,21 @@ public class Estado {
         this.ehAceito = ehAceito;
     }
 
+    public boolean existeTransicao(int simbolo){
+        for (Transicao transicao: this.transicoes) {
+            if (transicao.getSimboloAlfabeto() == simbolo){
+                return true;
+            }
+        }
+        return false;
+    }
 
-
+    public int fazTransicao(int simbolo) {
+        for (Transicao transicao : this.transicoes) {
+            if (transicao.getSimboloAlfabeto() == simbolo) {
+                return transicao.getIndiceFinal();
+            }
+        }
+        return -1;
+    }
 }
