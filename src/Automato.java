@@ -3,20 +3,46 @@ import java.util.List;
 
 public class Automato {
 
-    public Automato(int numeroDeEstados, int tamanhoAlfabeto, int numeroDeTransicoes, int estadoInicial, int numeroDestadosDeAceitacao) {
-        this.numeroDeEstados = numeroDeEstados;
-        this.tamanhoAlfabeto = tamanhoAlfabeto;
-        this.numeroDeTransicoes = numeroDeTransicoes;
-        this.estadoInicial = estadoInicial;
-        this.numeroDestadosDeAceitacao = numeroDestadosDeAceitacao;
-    }
-
     private int numeroDeEstados;
     private int tamanhoAlfabeto;
     private int numeroDeTransicoes;
     private int estadoInicial;
     private int numeroDestadosDeAceitacao;
-    List<Estado> estados = new ArrayList<Estado>();
+    private Estado estadoAtual;
+    private List<Estado> estados;
+
+    public Automato(int[] cabecalhoAutomato) {
+        this.numeroDeEstados = cabecalhoAutomato[0];
+        this.tamanhoAlfabeto = cabecalhoAutomato[1];
+        this.numeroDeTransicoes = cabecalhoAutomato[2];
+        this.estadoInicial = cabecalhoAutomato[3];
+        this.numeroDestadosDeAceitacao = cabecalhoAutomato[4];
+        List<Estado> estados = new ArrayList<>();
+        for (int i = 0; i < numeroDeEstados; i++){
+            Estado estado = new Estado();
+            estados.add(estado);
+        }
+        this.estados = estados;
+        this.estadoAtual = estados.get(estadoInicial);
+    }
+
+    public List<Estado> getEstados() {
+        return estados;
+    }
+
+    public void setEstados(List<Estado> estados) {
+        this.estados = estados;
+    }
+
+    public Estado getEstadoAtual() {
+        return estadoAtual;
+    }
+
+    public void setEstadoAtual(Estado estadoAtual) {
+        this.estadoAtual = estadoAtual;
+    }
+
+
 
     public int getNumeroDeEstados() {
         return numeroDeEstados;
@@ -58,5 +84,7 @@ public class Automato {
         this.numeroDestadosDeAceitacao = numeroDestadosDeAceitacao;
     }
 
-
+    public boolean verifica(String teste) {
+        return true;
+    }
 }
