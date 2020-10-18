@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /*
 *  Classe responsável por representar um estado dentro do autômato.
@@ -8,9 +9,10 @@ import java.util.List;
 * */
 public class Estado {
 
-    private int idEstado;
+    private String idEstado;
     private boolean ehAceito = false;
     private List<Transicao> transicoes = new ArrayList<>();
+    private int[] estadosAlcancaveis;
 
     public List<Transicao> getTransicoes() {
         return transicoes;
@@ -20,11 +22,11 @@ public class Estado {
         this.transicoes = transicoes;
     }
 
-    public int getIdEstado() {
+    public String getIdEstado() {
         return idEstado;
     }
 
-    public void setIdEstado(int idEstado) {
+    public void setIdEstado(String idEstado) {
         this.idEstado = idEstado;
     }
 
@@ -45,12 +47,44 @@ public class Estado {
         return false;
     }
 
-    public int fazTransicao(int simbolo) {
+    public String fazTransicao(int simbolo) {
         for (Transicao transicao : this.transicoes) {
             if (transicao.getSimboloAlfabeto() == simbolo) {
                 return transicao.getIndiceFinal();
             }
         }
-        return -1;
+        return "-1";
+    }
+
+    public void defineEstadosAlcancaveis(){
+        for (Transicao transicao:
+             this.transicoes) {
+            int simboloAlfabetoAtual;
+        }
+    }
+
+    //pego a lista de transicoes
+    //pego o simbolo atual
+    //pra cada transicao que tiver o alfabeto atual, adiciono seu indice à transicao e anterior e apago
+
+    public void apagaTransicoesRedundantes() {
+        if (transicoes.size() != 0) {
+            int alfabetoAtual = transicoes.get(0).getSimboloAlfabeto();
+            List<Transicao> transicoes = new ArrayList<>();
+            Transicao transicaoSaida = new Transicao();
+            String indiceSaida = "";
+            for (Transicao tran : getTransicoes()
+            ) {
+                if (tran.getSimboloAlfabeto() != alfabetoAtual) {
+                    transicaoSaida.setSimboloAlfabeto(alfabetoAtual);
+                    transicaoSaida.setIndiceFinal(indiceSaida);
+                    transicoes.add(transicaoSaida);
+                } else {
+                    indiceSaida.concat(" ").concat(tran.getIndiceFinal());
+                }
+
+            }
+            this.transicoes = transicoes;
+        }
     }
 }

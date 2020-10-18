@@ -1,3 +1,5 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,11 +10,16 @@ public class AutomatoApplication {
     public static void main(String[] args) throws IOException {
 
         /* Lê o arquivo de entrada*/
-        Scanner arquivoEntrada = new Scanner(System.in);
+        String caminho = System.getProperty("user.dir");
+        String arquivoHardCoded = caminho + "\\entrada.txt";
+        FileReader fileReader = new FileReader(arquivoHardCoded);
+        BufferedReader bufferedReader = new BufferedReader(fileReader);
+        Scanner arquivoEntrada = new Scanner(bufferedReader);
 
 
         /* primeira linha do arquivo de entrada tem o número de automatos*/
         int numeroDeAutomatos = arquivoEntrada.nextInt();   //n
+
         /*pra cada automato vou ter que fazer os próximos passos*/
 
         /* O arquivo de saída deverá ser um só para todos os autômatos, então vou criar antes de criá-los */
@@ -39,6 +46,7 @@ public class AutomatoApplication {
 
             /* Vou usar uma Expressão Regular para separar essa string pelo caracter " " (espaço)*/
             String[] estadosAceitacaoSeparados = estadosAceitacao.split("\\s+");
+            automato.setEstadosAceitacao(estadosAceitacaoSeparados);
 
             /* Laço para adicionar cada estado à lista de estados de aceitação*/
             for (String estado : estadosAceitacaoSeparados) {
@@ -55,7 +63,7 @@ public class AutomatoApplication {
                 String[] transicoesSeparadas = transicao.split("\\s+");
                 Transicao tran = new Transicao();
                 tran.setSimboloAlfabeto(Integer.valueOf(transicoesSeparadas[1]));
-                tran.setIndiceFinal(Integer.valueOf(transicoesSeparadas[2]));
+                tran.setIndiceFinal(transicoesSeparadas[2]);
 
                 automato.getEstados().get(Integer.valueOf(transicoesSeparadas[0]))
                         .getTransicoes().add(tran);
@@ -67,10 +75,14 @@ public class AutomatoApplication {
             /*Quando uso o nextInt antes de um nextLine preciso pualr uma linha para não ler a expressão vazia*/
             arquivoEntrada.nextLine();
 
+            /*Transformo o NFA em DFA*/
+            TransformaNfaEmDfa transformador = new TransformaNfaEmDfa();
+            Automato deterministico = transformador.transformaNfaParaDfa(automato);
+
             /* Para cada cadeia de teste verificar se o autômato é válido ou não*/
             for (int j = 0; j < numeroCadeiaTestes; j++) {
                 String teste = arquivoEntrada.nextLine();
-                String resultado = (automato.verifica(teste)) ? "1" : "0";
+                String resultado = (deterministico.verifica(teste)) ? "1" : "0";
                 saida+= resultado + " ";
             }
          saida+= "\n";
@@ -81,7 +93,7 @@ public class AutomatoApplication {
 
     private static int[] leCabecalho(Scanner arquivoEntrada) {
         int[] dadosAutomato = new int[5];
-        String cabecalho = arquivoEntrada.nextLine();
+        //String cabecalho = arquivoEntrada.nextLine();
 
         int numeroDeEstados = arquivoEntrada.nextInt();             //q
         int tamanhoAlfabeto = arquivoEntrada.nextInt();             //s

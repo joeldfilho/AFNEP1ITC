@@ -4,7 +4,7 @@
 public class Transicao {
 
     private int simboloAlfabeto;
-    private int indiceFinal;
+    private String indiceFinal;
 
     public int getSimboloAlfabeto() {
         return simboloAlfabeto;
@@ -14,11 +14,11 @@ public class Transicao {
         this.simboloAlfabeto = simboloAlfabeto;
     }
 
-    public int getIndiceFinal() {
+    public String getIndiceFinal() {
         return indiceFinal;
     }
 
-    public void setIndiceFinal(int indiceFinal) {
+    public void setIndiceFinal(String indiceFinal) {
         this.indiceFinal = indiceFinal;
     }
 

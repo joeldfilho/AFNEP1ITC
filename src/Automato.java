@@ -12,6 +12,20 @@ public class Automato {
     private List<Estado> estados;
     private int[][] tabelaEstados;
     private List<String[]> listaTransicoes;
+    public String[] estadosAceitacao;
+
+    public Automato() {
+    }
+
+    public String[] getEstadosAceitacao() {
+        return estadosAceitacao;
+    }
+
+    public void setEstadosAceitacao(String[] estadosAceitacao) {
+        this.estadosAceitacao = estadosAceitacao;
+    }
+
+
 
     public int[][] getTabelaEstados() {
         return tabelaEstados;
@@ -36,8 +50,9 @@ public class Automato {
         this.estadoInicial = cabecalhoAutomato[3];
         this.numeroDestadosDeAceitacao = cabecalhoAutomato[4];
         List<Estado> estados = new ArrayList<>();
-        for (int i = 0; i < numeroDeEstados; i++){
+        for (int i = 0; i < numeroDeEstados; i++) {
             Estado estado = new Estado();
+            estado.setIdEstado(String.valueOf(i));
             estados.add(estado);
         }
         this.estados = estados;
@@ -103,19 +118,28 @@ public class Automato {
 
     public boolean verifica(String teste) {
         String[] transicoes = teste.split("\\s+");
-        for (String transicao: transicoes) {
+        for (String transicao : transicoes) {
             int simbolo = Integer.valueOf(transicao);
-            if(estadoAtual.existeTransicao(simbolo)){
-                estadoAtual = estados.get(estadoAtual.fazTransicao(simbolo));
+            if (estadoAtual.existeTransicao(simbolo)) {
+                for (Transicao tran: estadoAtual.getTransicoes()) {
+                    if (tran.getSimboloAlfabeto() == simbolo) {
+                        for (Estado estado : estados
+                        ) {
+                            if (estado.getIdEstado().equals(tran.getIndiceFinal())) {
+                                estadoAtual = estado;
+                            }
+                        }
+                    }
+                }
             }
         }
         return estadoAtual.isEhAceito();
     }
 
-    public int[][] criaTabelaEstados(int numeroDeEstados, int tamanhoAlfabeto){
+    public int[][] criaTabelaEstados(int numeroDeEstados, int tamanhoAlfabeto) {
         //vou inicializar todos os espaços da tabela com -1
-        int[][]resultado =  new int[(int) Math.pow(2,numeroDeEstados)][tamanhoAlfabeto];
-        for (int i = 0; i < (int) Math.pow(2,numeroDeEstados); i++) {
+        int[][] resultado = new int[(int) Math.pow(2, numeroDeEstados)][tamanhoAlfabeto];
+        for (int i = 0; i < (int) Math.pow(2, numeroDeEstados); i++) {
             for (int j = 0; j < tamanhoAlfabeto; j++) {
                 resultado[i][j] = -1;
             }
@@ -123,26 +147,9 @@ public class Automato {
         return resultado;
     }
 
-    // Pego o estado inicial
-    // Pego os estados em que posso chegar partindo do inicial
-    //pra isso preciso de uma lista de todas as transições
-    public void populaTabelaEstados(int[][] tabelaEstados, List<String[]> listaTransicoes){
-        Estado estadoAtual = this.estadoAtual;
-        for (Transicao tran: estadoAtual.getTransicoes()) {
-            if(posicaoEstaVazia(tabelaEstados[estadoAtual.getIdEstado()][tran.getSimboloAlfabeto()])) {
-                tabelaEstados[estadoAtual.getIdEstado()][tran.getSimboloAlfabeto()] = tran.getIndiceFinal();
-            }
-            else{
-                Estado novoEstado = estadoAtual;
-                this.numeroDeEstados++;
-                estados.add(novoEstado);
-            }
-        }
 
 
-    }
-
-    private boolean posicaoEstaVazia(int i) {
-        return (i == -1) ? true : false;
-    }
+    // tenho meu AutomatoNFA com todas as informações.
+    // A partir dele tenho que criar o AutomatoDFA equivalente
+    //
 }
